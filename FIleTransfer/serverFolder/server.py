@@ -2,7 +2,13 @@ import socket
 import os,sys
 
 ss=socket.socket(socket.AF_INET,socket.SOCK_STREAM)
-addr=('localhost',4444)
+if len(sys.argv)==2 and int(sys.argv[1].split(':')[1])<64000 and int(sys.argv[1].split(':')[1])>1024:
+    port=int(sys.argv[1].split(":")[1])
+    host=sys.argv[1].split(":")[0]
+else:
+    port=4444
+    host='localhost'
+addr=(host,port)
 ss.bind(addr)
 ss.listen(2)
 
@@ -20,7 +26,7 @@ def main():
             while True:
                 data=cs.recv(4096)
                 if not data: break
-                print("Reciving...",end="\n")
+                print("Reciving...",end="\r")
                 rcv_file.write(data)
 
 
